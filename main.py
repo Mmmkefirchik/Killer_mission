@@ -10,14 +10,16 @@ z = wrap.sprite.add('zastavka', 500, 500, 'заставка')
 
 # k=wrap.sprite.add('zastavka',500,400,'img')
 # wrap.sprite.set_size_percent(k,40,30)
-t = wrap.sprite.add_text(' МИССИЯ ', 500, 400, font_size=50, italic=True, text_color=(255, 250, 0),
-                         back_color=(0, 250, 250))
+t = wrap.sprite.add_text(' МИССИЯ ', 500, 400, font_size=50, italic=True, text_color=(255, 250, 0),back_color=(0, 250, 250))
+posledniy_pos_x = 0
 
 
 # wrap.sprite.set_size_percent(t,300,300)
 @wrap.on_mouse_down(wrap.BUTTON_LEFT)
 def poxod_na_missiyo(pos_x, pos_y):
+    global posledniy_pos_x
     c=wrap.sprite.get_costume(z)
+
 
     if wrap.sprite.exist(t)==True:
         t_p = wrap.sprite.is_collide_point(t, pos_x, pos_y)
@@ -27,6 +29,7 @@ def poxod_na_missiyo(pos_x, pos_y):
 
     if c=='new_okno':
         wrap.sprite.set_costume(z, 'игра')
+        posledniy_pos_x=pos_x
         wrap.sprite.show(u)
 
 
@@ -35,4 +38,22 @@ def poxod_na_missiyo(pos_x, pos_y):
 def spusk_pric(pos_x,pos_y):
     if wrap.sprite.exist(t)==False:
         wrap.sprite.set_costume(z,'new_okno')
+
+@wrap.on_mouse_move()
+def pricelivanie(pos_x,pos_y):
+    global posledniy_pos_x
+    r=wrap.sprite.get_costume(z)
+    centrt_pric=wrap.sprite.get_centerx(u)
+    print(centrt_pric)
+    if r=='игра' and centrt_pric>-100 and centrt_pric<750:
+        rasstoyanie=posledniy_pos_x-pos_x
+        wrap.sprite.move(u, rasstoyanie, 0)
+
+    elif centrt_pric>=750:
+        wrap.sprite.move_centerx_to(u,749)
+
+    elif centrt_pric<=-100:
+        wrap.sprite.move_centerx_to(u,-99)
+
+    posledniy_pos_x=pos_x
 
