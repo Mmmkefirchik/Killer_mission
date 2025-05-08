@@ -43,17 +43,18 @@ def spusk_pric(pos_x,pos_y):
 def pricelivanie(pos_x,pos_y):
     global posledniy_pos_x
     r=wrap.sprite.get_costume(z)
-    centrt_pric=wrap.sprite.get_centerx(u)
-    print(centrt_pric)
-    if r=='игра' and centrt_pric>-100 and centrt_pric<750:
-        rasstoyanie=posledniy_pos_x-pos_x
-        wrap.sprite.move(u, rasstoyanie, 0)
+    if r!='игра' :
+        return
+    rasstoyanie=posledniy_pos_x-pos_x
+    wrap.sprite.move(u, rasstoyanie, 0)
+    centrt_pric = wrap.sprite.get_centerx(u)
 
-    elif centrt_pric>=750:
-        wrap.sprite.move_centerx_to(u,749)
+    if centrt_pric>1750:
+        wrap.sprite.move_centerx_to(u,1750)
 
-    elif centrt_pric<=-100:
-        wrap.sprite.move_centerx_to(u,-99)
+    elif centrt_pric<-1100:
+        wrap.sprite.move_centerx_to(u,-1100)
 
     posledniy_pos_x=pos_x
+
 
