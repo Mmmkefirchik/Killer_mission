@@ -4,10 +4,14 @@ from wrap_mENdRU.actions import set_size_percent
 wrap.world.create_world(1000, 900)
 wrap.add_sprite_dir('sprites')
 u= wrap.sprite.add('zastavka', 500, 500, 'new_okno',visible=False)
+r2=wrap.sprite.add('zastavka',500,100,'Ric',visible=False)
+p=wrap.sprite.add('zastavka',500,500,'siluat')
+z=wrap.sprite.add('zastavka',200,200,'siluat_p')
 p_p=wrap.sprite.add('zastavka', 500, 500, 'pric_in_pric',visible=False)
 wrap.sprite.set_size_percent(u,250,250)
 z = wrap.sprite.add('zastavka', 500, 500, 'заставка')
 
+r=wrap.sprite.add('zastavka',500,100,'Ric')
 
 # k=wrap.sprite.add('zastavka',500,400,'img')
 # wrap.sprite.set_size_percent(k,40,30)
@@ -45,18 +49,21 @@ def spusk_pric(pos_x,pos_y):
     if wrap.sprite.exist(nadpis)==False:
 
         wrap.sprite.set_costume(z,'new_okno')
+        wrap.sprite.show(r)
+        wrap.sprite.hide(r2)
+
 
 @wrap.on_mouse_move()
 def pricelivanie(pos_x,pos_y):
     #x
     global posledniy_pos_y,posledniy_pos_x
 
-    r=wrap.sprite.get_costume(z)
-    if r!='игра' :
+    l=wrap.sprite.get_costume(z)
+    if l!='игра' :
 
         return
     rasstoyanie=posledniy_pos_x-pos_x
-    rasstoyanie=rasstoyanie*2.5
+    rasstoyanie=rasstoyanie*5
 
     wrap.sprite.move(u, rasstoyanie, 0)
     centrt_pric = wrap.sprite.get_centerx(u)
@@ -73,7 +80,6 @@ def pricelivanie(pos_x,pos_y):
 
     rasstoyanie=posledniy_pos_y-pos_y
     rasstoyanie=rasstoyanie*2.5
-    print(rasstoyanie)
 
     wrap.sprite.move(u,0,rasstoyanie)
     centrt_pric = wrap.sprite.get_centery(u)
@@ -87,6 +93,29 @@ def pricelivanie(pos_x,pos_y):
 
 
     posledniy_pos_y=pos_y
+# wrap.sprite.set_size(p,80,80)
+    mesto_spr_na_krane(r,r2)
+
+def mesto_spr_na_krane(sprite_m,sprite_b):
+    wrap.sprite.set_size_percent(sprite_b,250,250)
+    mal_kran_spr1=wrap.sprite.get_centerx(sprite_m)
+    mal_kran_spr2=wrap.sprite.get_centery(sprite_m)
+    mal_kran1=mal_kran_spr1*2.5
+    mal_kran2=mal_kran_spr2*2.5
+
+    # bol_kran_x=1000*2.5
+    ramki_bol_kran_x1=wrap.sprite.get_left(u)
+    ramki_bol_kran_x2=wrap.sprite.get_top(u)
+
+    mesto_spr_bol_kran1=ramki_bol_kran_x1+mal_kran1
+    mesto_spr_bol_kran2=ramki_bol_kran_x2+mal_kran2
+
+    wrap.sprite.hide(sprite_m)
+    wrap.sprite.move_to(sprite_b,mesto_spr_bol_kran1,mesto_spr_bol_kran2)
+    wrap.sprite.show(sprite_b)
+
+
+
 
 
 
