@@ -7,6 +7,9 @@ u= wrap.sprite.add('zastavka', 500, 500, 'new_okno',visible=False)
 wrap.sprite.set_size_percent(u,250,250)
 #siluats
 s_bol=wrap.sprite.add('zastavka', 500, 500, 'siluat')
+wrap.sprite.set_size_percent(s_bol, 112.5, 112.5)
+
+s_bol_shir_orig=wrap.sprite.get_width(s_bol)
 wrap.sprite.set_reverse_x(s_bol,True)
 # r1=wrap.sprite.add('zastavka', 500, 100, 'Ric', visible=False)
 # s_p1=wrap.sprite.add('zastavka',200,200,'siluat_p')
@@ -86,8 +89,8 @@ def pricelivanie(pos_x,pos_y):
 
     l=wrap.sprite.get_costume(z)
     if l!='игра' :
-
         return
+
     rasstoyanie=posledniy_pos_x-pos_x
     rasstoyanie=rasstoyanie*5
 
@@ -124,7 +127,6 @@ def pricelivanie(pos_x,pos_y):
     # mesto_spr_na_krane(r2, r1)
     # mesto_spr_na_krane(s_p2, s_p1)
 def mesto_spr_na_krane(sprite_m,sprite_b):
-    wrap.sprite.set_size_percent(sprite_b,112.5,112.5)
     l=wrap.sprite.get_left(z)
     v=wrap.sprite.get_top(z)
     mal_kran_spr1=wrap.sprite.get_centerx(sprite_m)-l
@@ -145,25 +147,32 @@ def strelba():
     c_pricx=wrap.sprite.get_centerx(p_p)
     c_pricy=wrap.sprite.get_centery(p_p)
     j=wrap.sprite.is_collide_point(s_bol,c_pricx,c_pricy)
-p=-2
+p=-8
 
 @wrap.always(30)
 def szhatie():
+    crutilka(s_smal,s_bol)
+
+
+def crutilka(sprite_m,sprite_b,sprite_m_proc):
     global p
-    # wrap.sprite.get_s
 
-    r=wrap.sprite.get_width(s_smal)+p
-    if r<=0 :
-        p=2
-        wrap.sprite.set_reverse_x(s_smal,False)
+    r = wrap.sprite.get_width_percent(sprite_m) + p
+    if r>sprite_m_proc:
+        r=100
+    if r <= 0:
+        p = 8
+        revers = wrap.sprite.get_reverse_x(sprite_m)
 
+        wrap.sprite.set_reverse_x(sprite_m, not revers)
+        wrap.sprite.set_reverse_x(sprite_b, not revers)
 
-    wrap.sprite.set_width(s_smal,r)
+    if r > 100:
+        p = -8
 
-    # if j==True:
-        # wrap.sprite.set_
-#
-# def uzost():
+    wrap.sprite.set_width_percent(sprite_m,r)
+    wrap.sprite.set_width_percent(sprite_b,r)
+
 
 
 
