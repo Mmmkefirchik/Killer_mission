@@ -147,31 +147,46 @@ def strelba():
     c_pricx=wrap.sprite.get_centerx(p_p)
     c_pricy=wrap.sprite.get_centery(p_p)
     j=wrap.sprite.is_collide_point(s_bol,c_pricx,c_pricy)
-p=-8
 
-@wrap.always(30)
+@wrap.always(300    )
 def szhatie():
-    crutilka(s_smal,s_bol)
+    crutilka(s_smal,s_smal_shir_orig)
 
 
-def crutilka(sprite_m,sprite_b,sprite_m_proc):
-    global p
+# def crutilka(sprite, orig_shir):
+#     global p
+#
+#     shir_now= wrap.sprite.get_width_percent(sprite)
+#
+#     if shir_now>=orig_shir:
+#         shir_now=orig_shir
+    #
+    # if shir_now <= orig_shir:
+    #     p = 8
+    #     revers = wrap.sprite.get_reverse_x(sprite)
+    #
+    #     wrap.sprite.set_reverse_x(sprite, not revers)
+    #
+    # if shir_now>= orig_shir:
+    #     p = -8
+    # wrap.sprite.set_width_percent(sprite,p)
 
-    r = wrap.sprite.get_width_percent(sprite_m) + p
-    if r>sprite_m_proc:
-        r=100
-    if r <= 0:
-        p = 8
-        revers = wrap.sprite.get_reverse_x(sprite_m)
+    # wrap.sprite.set_width_percent(sprite,r)
 
-        wrap.sprite.set_reverse_x(sprite_m, not revers)
-        wrap.sprite.set_reverse_x(sprite_b, not revers)
 
-    if r > 100:
-        p = -8
+def crutilka(sprite,orig_shir):
+    now_shir=wrap.sprite.get_width(sprite)
+    print(now_shir)
 
-    wrap.sprite.set_width_percent(sprite_m,r)
-    wrap.sprite.set_width_percent(sprite_b,r)
+    p=now_shir-8
+
+    # if orig_shir<=now_shir:
+    #     p=now_shir-8
+    #
+    if now_shir<=1:
+        p=now_shir+8
+
+    wrap.sprite.set_width(sprite,p)
 
 
 
