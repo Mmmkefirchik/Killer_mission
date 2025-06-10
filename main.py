@@ -151,6 +151,7 @@ def strelba():
 @wrap.always(300    )
 def szhatie():
     crutilka(s_smal,s_smal_shir_orig)
+    crutilka(s_bol,s_bol_shir_orig)
 
 
 # def crutilka(sprite, orig_shir):
@@ -173,18 +174,24 @@ def szhatie():
 
     # wrap.sprite.set_width_percent(sprite,r)
 
-
+x=-8
 def crutilka(sprite,orig_shir):
+    global x
+
     now_shir=wrap.sprite.get_width(sprite)
     print(now_shir)
-
-    p=now_shir-8
+    if x==-8 and now_shir<=1:
+        revers = wrap.sprite.get_reverse_x(sprite)
+        wrap.sprite.set_reverse_x(sprite, not revers)
+        x=8
 
     # if orig_shir<=now_shir:
     #     p=now_shir-8
     #
-    if now_shir<=1:
-        p=now_shir+8
+    if x==8 and now_shir>=orig_shir:
+        x=-8
+    p=now_shir+x
+
 
     wrap.sprite.set_width(sprite,p)
 
