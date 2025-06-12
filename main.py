@@ -9,7 +9,8 @@ wrap.sprite.set_size_percent(u,250,250)
 s_bol=wrap.sprite.add('zastavka', 500, 500, 'siluat')
 wrap.sprite.set_size_percent(s_bol, 112.5, 112.5)
 
-s_bol_shir_orig=wrap.sprite.get_width(s_bol)
+s_bol_shir_orig=wrap.sprite.get_width_percent(s_bol)
+print(s_bol_shir_orig)
 wrap.sprite.set_reverse_x(s_bol,True)
 # r1=wrap.sprite.add('zastavka', 500, 100, 'Ric', visible=False)
 # s_p1=wrap.sprite.add('zastavka',200,200,'siluat_p')
@@ -23,7 +24,8 @@ z = wrap.sprite.add('zastavka', 500, 500, 'заставка')
 s_smal=wrap.sprite.add('zastavka', 725, 780, 'siluat',visible=False)
 wrap.sprite.set_reverse_x(s_smal,True)
 wrap.sprite.set_size_percent(s_smal,45,45)
-s_smal_shir_orig=wrap.sprite.get_width(s_smal)
+s_smal_shir_orig=wrap.sprite.get_width_percent(s_smal)
+print(s_smal_shir_orig)
 
 nadpis = wrap.sprite.add_text(' МИССИЯ ', 500, 400, font_size=50, italic=True, text_color=(255, 250, 0), back_color=(0, 250, 250))
 
@@ -54,6 +56,7 @@ def poxod_na_missiyo(pos_x, pos_y):
         wrap.sprite.hide(s_smal)
         # wrap.sprite.hide(s_p2)
 
+        print(s_smal_shir_orig)
         # wrap.sprite.show(r1)
         # wrap.sprite.show(s_p1)
 
@@ -154,46 +157,28 @@ def szhatie():
     crutilka(s_bol,s_bol_shir_orig)
 
 
-# def crutilka(sprite, orig_shir):
-#     global p
-#
-#     shir_now= wrap.sprite.get_width_percent(sprite)
-#
-#     if shir_now>=orig_shir:
-#         shir_now=orig_shir
-    #
-    # if shir_now <= orig_shir:
-    #     p = 8
-    #     revers = wrap.sprite.get_reverse_x(sprite)
-    #
-    #     wrap.sprite.set_reverse_x(sprite, not revers)
-    #
-    # if shir_now>= orig_shir:
-    #     p = -8
-    # wrap.sprite.set_width_percent(sprite,p)
+# def crutilka(sprite_smal, sprite_bal, sprite_bal,orig_shir):
 
-    # wrap.sprite.set_width_percent(sprite,r)
-
-x=-8
+x=None
 def crutilka(sprite,orig_shir):
     global x
+    if x==None:
+        x=orig_shir*-0.05
 
-    now_shir=wrap.sprite.get_width(sprite)
+    now_shir=wrap.sprite.get_width_percent(sprite)
     print(now_shir)
-    if x==-8 and now_shir<=1:
+    if x<0  and now_shir<=0:
         revers = wrap.sprite.get_reverse_x(sprite)
         wrap.sprite.set_reverse_x(sprite, not revers)
-        x=8
+        x=orig_shir*0.05
 
-    # if orig_shir<=now_shir:
-    #     p=now_shir-8
     #
-    if x==8 and now_shir>=orig_shir:
-        x=-8
+    if x==orig_shir*0.05 and now_shir>=orig_shir:
+        x=orig_shir*-0.05
     p=now_shir+x
-
-
-    wrap.sprite.set_width(sprite,p)
+    #
+    #
+    wrap.sprite.set_width_percent(sprite,p)
 
 
 
