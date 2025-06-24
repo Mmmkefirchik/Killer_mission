@@ -48,7 +48,6 @@ def poxod_na_missiyo(pos_x, pos_y):
             wrap.sprite.show(m)
 
 
-
     if c=='new_okno':
         wrap.sprite.set_costume(z, 'игра')
         wrap.sprite.hide(m)
@@ -64,6 +63,7 @@ def poxod_na_missiyo(pos_x, pos_y):
         posledniy_pos_x=pos_x
         posledniy_pos_y=pos_y
         wrap.sprite.show(u)
+
 
 
 
@@ -145,40 +145,52 @@ def mesto_spr_na_krane(sprite_m,sprite_b):
 
     wrap.sprite.move_to(sprite_b,mesto_spr_bol_kran1,mesto_spr_bol_kran2)
 
+
+j=False
 @wrap.on_mouse_down(wrap.BUTTON_RIGHT)
 def strelba():
+    global j
+    if j==True:
+        return
     c_pricx=wrap.sprite.get_centerx(p_p)
     c_pricy=wrap.sprite.get_centery(p_p)
     j=wrap.sprite.is_collide_point(s_bol,c_pricx,c_pricy)
 
-@wrap.always(300    )
+
+# @wrap
+
+
+@wrap.always(30)
 def szhatie():
-    crutilka(s_smal,s_smal_shir_orig)
-    crutilka(s_bol,s_bol_shir_orig)
+    if j==True:
+        crutilka(s_bol,s_smal,s_smal_shir_orig)
 
 
-# def crutilka(sprite_smal, sprite_bal, sprite_bal,orig_shir):
+
 
 x=None
-def crutilka(sprite,orig_shir):
+def crutilka(sprite_big,sprite_smal,orig_shir_smal):
     global x
     if x==None:
-        x=orig_shir*-0.05
+        x=orig_shir_smal*-0.05
 
-    now_shir=wrap.sprite.get_width_percent(sprite)
+    now_shir=wrap.sprite.get_width_percent(sprite_smal)
     print(now_shir)
     if x<0  and now_shir<=0:
-        revers = wrap.sprite.get_reverse_x(sprite)
-        wrap.sprite.set_reverse_x(sprite, not revers)
-        x=orig_shir*0.05
+        revers = wrap.sprite.get_reverse_x(sprite_smal)
+        wrap.sprite.set_reverse_x(sprite_smal, not revers)
+        wrap.sprite.set_reverse_x(sprite_big, not revers)
+        x=orig_shir_smal*0.05
 
     #
-    if x==orig_shir*0.05 and now_shir>=orig_shir:
-        x=orig_shir*-0.05
+    if x==orig_shir_smal*0.05 and now_shir>=orig_shir_smal:
+        x=orig_shir_smal*-0.05
     p=now_shir+x
     #
     #
-    wrap.sprite.set_width_percent(sprite,p)
+    wrap.sprite.set_width_percent(sprite_smal,p)
+
+    wrap.sprite.set_width_percent(sprite_big,p*2.5)
 
 
 

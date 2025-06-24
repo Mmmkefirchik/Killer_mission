@@ -1,9 +1,7 @@
-a=5
+p=1
 
-def rrr ():
-    global a
-    a=4
-    print(a)
-print(a)
-rrr()
-print(a)
+def fvI():
+    global p
+    print(p)
+    p=5
+print(p)
