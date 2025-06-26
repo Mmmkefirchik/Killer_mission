@@ -1,4 +1,5 @@
 import wrap, time
+mode = 'menu'#igra,pric,popadanie,prpoigresh,pabada
 
 wrap.world.create_world(1000, 900)
 wrap.add_sprite_dir('sprites')
@@ -16,7 +17,7 @@ wrap.sprite.set_reverse_x(s_bol,True)
 # s_p1=wrap.sprite.add('zastavka',200,200,'siluat_p')
 
 p_p=wrap.sprite.add('zastavka', 500, 500, 'pric_in_pric',visible=False)
-z = wrap.sprite.add('zastavka', 500, 500, 'заставка')
+zastavka = wrap.sprite.add('zastavka', 500, 500, 'заставка')
 
 #siluats big/2
 # r2=wrap.sprite.add('zastavka', 500, 100, 'Ric')
@@ -33,23 +34,24 @@ posledniy_pos_y = 0
 posledniy_pos_x = 0
 m = wrap.sprite.add_text('ВАША ЦЕЛЬ НА СЕГОДНЯ: ЧЕЛОВЕК В ЧЕРНОМ', 500, 250,visible=False)
 
-
+n_p=None
 @wrap.on_mouse_down(wrap.BUTTON_LEFT)
 def poxod_na_missiyo(pos_x, pos_y):
-    global posledniy_pos_x,posledniy_pos_y
-    c=wrap.sprite.get_costume(z)
+    global posledniy_pos_x,posledniy_pos_y,n_p,mode
 
-    if wrap.sprite.exist(nadpis)==True:
+
+    if mode=='menu':
         n_p = wrap.sprite.is_collide_point(nadpis, pos_x, pos_y)
-
         if n_p == True:
+            mode = 'igra'
             wrap.sprite.remove(nadpis)
-            wrap.sprite.set_costume(z, 'new_okno')
+            wrap.sprite.set_costume(zastavka, 'new_okno')
             wrap.sprite.show(m)
+            return
 
-
-    if c=='new_okno':
-        wrap.sprite.set_costume(z, 'игра')
+    if mode=='igra':
+        mode='pric'
+        wrap.sprite.set_costume(zastavka, 'игра')
         wrap.sprite.hide(m)
         # wrap.sprite.hide(r2)
         wrap.sprite.hide(s_smal)
@@ -70,19 +72,15 @@ def poxod_na_missiyo(pos_x, pos_y):
 
 @wrap.on_mouse_up(wrap.BUTTON_LEFT)
 def spusk_pric(pos_x,pos_y):
+    global  mode
     wrap.sprite.move_to(u,500,450)
 
-    if wrap.sprite.exist(nadpis)==False:
-
-        wrap.sprite.set_costume(z,'new_okno')
+    if mode!='menu':
+        mode='igra'
+        wrap.sprite.set_costume(zastavka, 'new_okno')
         wrap.sprite.show(s_smal)
-        # wrap.sprite.show(s1)
-        # wrap.sprite.show(r2)
-        # wrap.sprite.hide(r1)
         mesto_spr_na_krane(s_smal, s_bol)
 
-        # wrap.sprite.show(s_p2)
-        # wrap.sprite.hide(s_p1)
 
 
 @wrap.on_mouse_move()
@@ -90,7 +88,7 @@ def pricelivanie(pos_x,pos_y):
     #x
     global posledniy_pos_y,posledniy_pos_x,m
 
-    l=wrap.sprite.get_costume(z)
+    l=wrap.sprite.get_costume(zastavka)
     if l!='игра' :
         return
 
@@ -130,8 +128,8 @@ def pricelivanie(pos_x,pos_y):
     # mesto_spr_na_krane(r2, r1)
     # mesto_spr_na_krane(s_p2, s_p1)
 def mesto_spr_na_krane(sprite_m,sprite_b):
-    l=wrap.sprite.get_left(z)
-    v=wrap.sprite.get_top(z)
+    l=wrap.sprite.get_left(zastavka)
+    v=wrap.sprite.get_top(zastavka)
     mal_kran_spr1=wrap.sprite.get_centerx(sprite_m)-l
     mal_kran_spr2=wrap.sprite.get_centery(sprite_m)-v
     mal_kran1=mal_kran_spr1*2.5
@@ -145,7 +143,7 @@ def mesto_spr_na_krane(sprite_m,sprite_b):
 
     wrap.sprite.move_to(sprite_b,mesto_spr_bol_kran1,mesto_spr_bol_kran2)
 
-
+popatka = 15
 j=False
 @wrap.on_mouse_down(wrap.BUTTON_RIGHT)
 def strelba():
@@ -158,7 +156,6 @@ def strelba():
 
 
 # @wrap
-
 
 @wrap.always(30)
 def szhatie():
@@ -192,8 +189,24 @@ def crutilka(sprite_big,sprite_smal,orig_shir_smal):
 
     wrap.sprite.set_width_percent(sprite_big,p*2.5)
 
+q = wrap.sprite.add_text(str(popatka), 500, 100,False)
 
 
+@wrap.always(1000)
+def timer():
+    global popatka
+    if popatka <= 15 and popatka != -1 and n_p==True:
+        wrap.sprite.show(q)
+        wrap.sprite_text.set_text(q, str(popatka))
+        popatka = popatka - 1
+
+    print(popatka)
+
+
+
+@wrap.always
+def debug():
+    wrap.world.set_title(mode)
 
 
 
