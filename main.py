@@ -1,6 +1,7 @@
-import wrap, time
+import wrap,random
 
 mode = 'menu'  # igra,pric,popadanie,prpoigresh,pabada
+progres='missiya'#vigrish,prpoigresh
 
 wrap.world.create_world(1000, 900)
 wrap.add_sprite_dir('sprites')
@@ -50,7 +51,7 @@ def poxod_na_missiyo(pos_x, pos_y):
             wrap.sprite.show(m)
             return
 
-    if mode == 'igra' or mode=='popadanie':
+    if mode == 'igra':
         mode = 'pric'
         wrap.sprite.set_costume(zastavka, 'игра')
         wrap.sprite.hide(m)
@@ -74,8 +75,7 @@ def spusk_pric(pos_x, pos_y):
     wrap.sprite.move_to(u, 500, 450)
 
     if mode != 'menu':
-        if mode!='popadanie':
-            mode = 'igra'
+        mode = 'igra'
         wrap.sprite.set_costume(zastavka, 'new_okno')
         wrap.sprite.show(s_smal)
         mesto_spr_na_krane(s_smal, s_bol)
@@ -144,24 +144,32 @@ def mesto_spr_na_krane(sprite_m, sprite_b):
     wrap.sprite.move_to(sprite_b, mesto_spr_bol_kran1, mesto_spr_bol_kran2)
 
 
-popatka = 15
 
+puli=5
 @wrap.on_mouse_down(wrap.BUTTON_RIGHT)
 def strelba():
-    global mode
-    if mode=='popadanie':
+    global progres,puli
+    if progres=='vigrish' or progres=='proigrish':
         return
     c_pricx = wrap.sprite.get_centerx(p_p)
     c_pricy = wrap.sprite.get_centery(p_p)
     if wrap.sprite.is_collide_point(s_bol, c_pricx, c_pricy)==True:
-        mode='popadanie'
+        progres='vigrish'
+        wrap.sprite.add_text('МИССИЯ ПРОВАЛЕНА!',500,450,bold=True,font_size=75,text_color=(255,0,0),back_color=(0,0,0,125))
+
+    else:
+        puli=puli-1
+        print(puli)
+    if puli==0:
+        progres='proigrish'
 
 
 # @wrap
 
 @wrap.always(30)
 def szhatie():
-    if mode=='popadanie':
+    if progres=='vigrish':
+        wrap.sprite.add_text('ПОБЕДА',500,450,bold=True,font_size=75,text_color=(0,255,0),back_color=(0,0,0))
         crutilka(s_bol, s_smal, s_smal_shir_orig)
 
 
@@ -174,7 +182,6 @@ def crutilka(sprite_big, sprite_smal, orig_shir_smal):
         x = orig_shir_smal * -0.05
 
     now_shir = wrap.sprite.get_width_percent(sprite_smal)
-    print(now_shir)
     if x < 0 and now_shir <= 0:
         revers = wrap.sprite.get_reverse_x(sprite_smal)
         wrap.sprite.set_reverse_x(sprite_smal, not revers)
@@ -191,19 +198,23 @@ def crutilka(sprite_big, sprite_smal, orig_shir_smal):
 
     wrap.sprite.set_width_percent(sprite_big, p * 2.5)
 
-
+popatka = 10
 q = wrap.sprite.add_text(str(popatka), 500, 100, False)
-
 
 @wrap.always(1000)
 def timer():
-    global popatka
+    global popatka,progres
+    if popatka==0 and progres!='vigrish':
+        progres='proigrish'
+
+    if progres=='proigrish':
+        wrap.sprite.add_text('МИССИЯ ПРОВАЛЕНА!',500,450,bold=True,font_size=75,text_color=(255,0,0),back_color=(0,0,0,125))
+
     if popatka <= 15 and popatka != -1 and mode!='menu':
         wrap.sprite.show(q)
         wrap.sprite_text.set_text(q, str(popatka))
         popatka = popatka - 1
 
-    print(popatka)
 
 
 
@@ -218,7 +229,7 @@ def timer():
 
 @wrap.always
 def debug():
-    wrap.world.set_title(mode)
+    wrap.world.set_title(mode +' '+ progres)
 import wrap_py
 
 wrap_py.app.start()
